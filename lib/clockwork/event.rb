@@ -35,6 +35,9 @@ module Clockwork
         if @manager.thread_available?
           t = Thread.new do
             execute
+            if defined?(ActiveRecord)
+              ActiveRecord::Base.connection.close
+            end
           end
           t['creator'] = @manager
         else
